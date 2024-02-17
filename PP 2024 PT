@@ -1,0 +1,118 @@
+import os
+
+def display_prompt():
+    current_directory = os.getcwd()
+    print(f"Aktualna ścieżka: {current_directory}")
+
+def help_command():
+    print("Dostępne komendy:")
+    print("help - Wyświetla listę komend")
+    print("quit lub exit - Kończy program")
+    print("ls - Wyświetla pliki w aktualnym katalogu")
+    print("cr - Tworzy nowy plik w bieżącym katalogu")
+    print("cd - Przechodzi do innego katalogu")
+    print("mkdir - Tworzy nowy katalog w bieżącym katalogu")
+    print("o - Wyświetla zawartość pliku")
+    print("stat - Podsumowanie ilości znaków w pliku")
+    print("rename - Zmienia nazwę pliku")
+    print("find - Wyszukiwanie tekstu w pliku")
+
+def ls_command():
+    files = os.listdir()
+    for file in files:
+        print(file)
+
+def cr_command():
+    file_name = input("Podaj nazwę nowego pliku: ")
+    try:
+        with open(file_name, 'w'):
+            print(f"Plik '{file_name}' został utworzony.")
+    except Exception as e:
+        print(f"Błąd podczas tworzenia pliku '{file_name}': {e}")
+
+def cd_command():
+    directory_name = input("Podaj nazwę katalogu, do którego chcesz przejść: ")
+    try:
+        os.chdir(directory_name)
+    except Exception as e:
+        print(f"Błąd podczas zmiany katalogu: {e}")
+
+def mkdir_command():
+    directory_name = input("Podaj nazwę nowego katalogu: ")
+    try:
+        os.mkdir(directory_name)
+        print(f"Utworzono katalog: {directory_name}")
+    except Exception as e:
+        print(f"Błąd podczas tworzenia katalogu '{directory_name}': {e}")
+
+def o_command():
+    file_name = input("Podaj nazwę pliku do wyświetlenia: ")
+    try:
+        with open(file_name, 'r') as file:
+            content = file.read()
+            print(content)
+    except Exception as e:
+        print(f"Błąd podczas odczytu pliku '{file_name}': {e}")
+
+def stat_command():
+    file_name = input("Podaj nazwę pliku do podsumowania: ")
+    try:
+        with open(file_name, 'r') as file:
+            content = file.read()
+            char_count = len(content)
+            print(f"Ilość znaków w pliku '{file_name}': {char_count}")
+    except Exception as e:
+        print(f"Błąd podczas odczytu pliku '{file_name}': {e}")
+
+def rename_command():
+    old_name = input("Podaj starą nazwę pliku: ")
+    new_name = input("Podaj nową nazwę pliku: ")
+    try:
+        os.rename(old_name, new_name)
+        print(f"Zmieniono nazwę pliku z '{old_name}' na '{new_name}'.")
+    except Exception as e:
+        print(f"Błąd podczas zmiany nazwy pliku: {e}")
+
+def find_command():
+    file_name = input("Podaj nazwę pliku: ")
+    search_text = input("Podaj szukany tekst: ")
+    try:
+        with open(file_name, 'r') as file:
+            if search_text in file.read():
+                print(f"Tekst '{search_text}' został znaleziony w pliku '{file_name}'.")
+            else:
+                print(f"Tekst '{search_text}' nie został znaleziony w pliku '{file_name}'.")
+    except Exception as e:
+        print(f"Błąd podczas przeszukiwania pliku '{file_name}': {e}")
+
+def main():
+    while True:
+        display_prompt()
+        user_input = input("Wpisz komendę: ").strip().lower()
+
+        if user_input in ("quit", "exit"):
+            print("Koniec programu.")
+            break
+        elif user_input == "help":
+            help_command()
+        elif user_input == "ls":
+            ls_command()
+        elif user_input == "cr":
+            cr_command()
+        elif user_input == "cd":
+            cd_command()
+        elif user_input == "mkdir":
+            mkdir_command()
+        elif user_input == "o":
+            o_command()
+        elif user_input == "stat":
+            stat_command()
+        elif user_input == "rename":
+            rename_command()
+        elif user_input == "find":
+            find_command()
+        else:
+            print(f"Nieznana komenda '{user_input}'.")
+
+if __name__ == "__main__":
+    main()
